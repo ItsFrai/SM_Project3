@@ -1,16 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.rubank_ui.HelloController">
-  <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-  </padding>
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+  <Tab text="Open/Close">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+      <Label layoutX="121.0" layoutY="28.0" text="First Name" />
+      <TextField layoutX="198.0" layoutY="24.0" />
+         <Label layoutX="121.0" layoutY="66.0" text="Last Name" />
+         <Label layoutX="121.0" layoutY="101.0" text="Date of Birth" />
+         <TextField layoutX="198.0" layoutY="62.0" />
+         <DatePicker layoutX="198.0" layoutY="97.0" />
+         <Label layoutX="114.0" layoutY="167.0" text="Account type" />
+        <RadioButton layoutX="198.0" layoutY="131.0" text="Checking" />
+        <RadioButton layoutX="198.0" layoutY="155.0" text="Savings" />
+        <RadioButton layoutX="198.0" layoutY="179.0" text="Money Market" />
+        <RadioButton layoutX="198.0" layoutY="203.0" text="College Checking" />
+        <Button layoutX="198.0" layoutY="230.0" text="Open" />
+        <Button layoutX="255.0" layoutY="230.0" text="Close" />
+        <Button layoutX="312.0" layoutY="230.0" text="Clear" />
+        <TextArea layoutX="198.0" layoutY="270" prefWidth="250.0" prefHeight="120.0" />
 
-  <Label fx:id="welcomeText"/>
-  <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+    </AnchorPane>
+  </Tab>
+  <Tab text="Deposit/Withdraw">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
+      <Label layoutX="121.0" layoutY="28.0" text="First Name" />
+      <TextField layoutX="198.0" layoutY="24.0" />
+      <Label layoutX="121.0" layoutY="66.0" text="Last Name" />
+      <Label layoutX="121.0" layoutY="101.0" text="Date of Birth" />
+      <TextField layoutX="198.0" layoutY="62.0" />
+      <DatePicker layoutX="198.0" layoutY="97.0" />
+      <Label layoutX="114.0" layoutY="167.0" text="Account type" />
+      <RadioButton text="Checking" layoutX="198.0" layoutY="190.0" />
+      <RadioButton text="Savings" layoutX="198.0" layoutY="220.0" />
+      <RadioButton text="Money Market" layoutX="198.0" layoutY="250.0" />
+      <RadioButton text="College Checking" layoutX="198.0" layoutY="280.0" />
+      <Label layoutX="121.0" layoutY="320.0" text="Amount" />
+      <TextField layoutX="198.0" layoutY="316.0" />
+      <Button text="Deposit" layoutX="198.0" layoutY="360.0" />
+      <Button text="Withdraw" layoutX="260.0" layoutY="360.0" />
+      <Label layoutX="121.0" layoutY="400.0" text="Comments" />
+      <TextArea layoutX="198.0" layoutY="400.0" prefWidth="250.0" prefHeight="120.0" />
+    </AnchorPane>
+  </Tab>
+  <Tab text="Account Database">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+  </Tab>
+  <Tab text="Demo Meu">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+  </Tab>
+</TabPane>

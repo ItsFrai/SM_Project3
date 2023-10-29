@@ -96,7 +96,7 @@ public class MoneyMarket extends Savings {
             isLoyal = false;
         }
         DecimalFormat df = new DecimalFormat("#,##0.00");
-        return accountType() + "::Savings::" + holder + "::Balance $" + df.format(balance) + "::withdrawal: " + withdrawl;
+        return accountType() + "::Savings::" + holder + "::Balance $" + df.format(balance) + "::is loyal" + "::withdrawal: " + withdrawl ;
     }
 
     /**

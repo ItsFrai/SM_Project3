@@ -1,5 +1,6 @@
 package com.example.rubank_ui;
 
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

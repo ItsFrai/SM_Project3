@@ -1,14 +1,28 @@
 package com.example.rubank_ui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 
 public class HelloController {
-    @FXML
-    private Label welcomeText;
 
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
+        @FXML
+        private ToggleGroup Campus;
+        @FXML
+        public void handleCollegeCheckingSelection() {
+                // Enable the Campus radio buttons
+                Campus.getToggles().forEach(toggle -> {
+                        if (toggle instanceof RadioButton) {
+                                ((RadioButton) toggle).setDisable(false);
+                        }
+                });
+        }
+        @FXML
+        public void handleOtherAccountSelection() {
+                Campus.getToggles().forEach(toggle -> {
+                        if (toggle instanceof RadioButton) {
+                                ((RadioButton) toggle).setDisable(true);
+                        }
+                });
+        }
 }

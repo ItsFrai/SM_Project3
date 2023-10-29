@@ -3,9 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+
+<TabPane fx:controller="com.example.rubank_ui.HelloController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
   <Tab text="Open/Close">
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+    <AnchorPane  minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
       <Label layoutX="121.0" layoutY="28.0" text="First Name" />
       <TextField layoutX="198.0" layoutY="24.0" />
          <Label layoutX="121.0" layoutY="66.0" text="Last Name" />
@@ -13,14 +14,26 @@
          <TextField layoutX="198.0" layoutY="62.0" />
          <DatePicker layoutX="198.0" layoutY="97.0" />
          <Label layoutX="114.0" layoutY="167.0" text="Account type" />
-        <RadioButton layoutX="198.0" layoutY="131.0" text="Checking" />
-        <RadioButton layoutX="198.0" layoutY="155.0" text="Savings" />
-        <RadioButton layoutX="198.0" layoutY="179.0" text="Money Market" />
-        <RadioButton layoutX="198.0" layoutY="203.0" text="College Checking" />
+      <RadioButton layoutX="198.0" layoutY="131.0" text="Checking" onAction="#handleOtherAccountSelection">
+            <toggleGroup>
+               <ToggleGroup fx:id="Account" />
+            </toggleGroup></RadioButton>
+      <RadioButton layoutX="198.0" layoutY="155.0" text="Savings" toggleGroup="$Account"  onAction="#handleOtherAccountSelection"/>
+      <RadioButton layoutX="198.0" layoutY="179.0" text="Money Market" toggleGroup="$Account" onAction="#handleOtherAccountSelection" />
+        <RadioButton layoutX="198.0" layoutY="203.0" text="College Checking" toggleGroup="$Account" onAction="#handleCollegeCheckingSelection" />
         <Button layoutX="198.0" layoutY="230.0" text="Open" />
         <Button layoutX="255.0" layoutY="230.0" text="Close" />
         <Button layoutX="312.0" layoutY="230.0" text="Clear" />
-        <TextArea layoutX="198.0" layoutY="270" prefWidth="250.0" prefHeight="120.0" />
+        <TextArea layoutX="12.0" layoutY="270" prefHeight="120.0" prefWidth="576.0" />
+         <Label layoutX="340.0" layoutY="147.0" text="Amount" />
+         <TextField layoutX="395.0" layoutY="142.0" />
+         <RadioButton layoutX="368.0" layoutY="188.0" mnemonicParsing="false" disable="true" text="NB">
+            <toggleGroup>
+               <ToggleGroup fx:id="Campus" />
+            </toggleGroup></RadioButton>
+         <RadioButton layoutX="368.0" layoutY="212.0" mnemonicParsing="false" text="Newark" disable="true" toggleGroup="$Campus" />
+         <RadioButton layoutX="368.0" layoutY="234.0" mnemonicParsing="false" text="Camden"  disable="true" toggleGroup="$Campus" />
+         <CheckBox layoutX="466.0" layoutY="188.0" mnemonicParsing="false" text=" loyal customer" />
 
     </AnchorPane>
   </Tab>
@@ -33,22 +46,46 @@
       <TextField layoutX="198.0" layoutY="62.0" />
       <DatePicker layoutX="198.0" layoutY="97.0" />
       <Label layoutX="114.0" layoutY="167.0" text="Account type" />
-      <RadioButton text="Checking" layoutX="198.0" layoutY="190.0" />
-      <RadioButton text="Savings" layoutX="198.0" layoutY="220.0" />
-      <RadioButton text="Money Market" layoutX="198.0" layoutY="250.0" />
-      <RadioButton text="College Checking" layoutX="198.0" layoutY="280.0" />
+      <RadioButton layoutX="198.0" layoutY="190.0" text="Checking" toggleGroup="$Account" />
+      <RadioButton layoutX="198.0" layoutY="220.0" text="Savings" toggleGroup="$Account" />
+      <RadioButton layoutX="198.0" layoutY="250.0" text="Money Market" toggleGroup="$Account" />
+      <RadioButton layoutX="198.0" layoutY="280.0" text="College Checking" toggleGroup="$Account" />
       <Label layoutX="121.0" layoutY="320.0" text="Amount" />
       <TextField layoutX="198.0" layoutY="316.0" />
-      <Button text="Deposit" layoutX="198.0" layoutY="360.0" />
-      <Button text="Withdraw" layoutX="260.0" layoutY="360.0" />
+      <Button layoutX="198.0" layoutY="360.0" text="Deposit" />
+      <Button layoutX="260.0" layoutY="360.0" text="Withdraw" />
       <Label layoutX="121.0" layoutY="400.0" text="Comments" />
-      <TextArea layoutX="198.0" layoutY="400.0" prefWidth="250.0" prefHeight="120.0" />
+      <TextArea layoutX="6.0" layoutY="400.0" prefHeight="120.0" prefWidth="584.0" />
     </AnchorPane>
   </Tab>
   <Tab text="Account Database">
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
+      <Button layoutX="59.0" layoutY="36.0" prefHeight="56.0" prefWidth="140.0" text="Print all accounts" />
+      <Button layoutX="246.0" layoutY="36.0" prefHeight="55.0" prefWidth="175.0" text="Load accounts from a file" />
+      <Button layoutX="62.0" layoutY="129.0" prefHeight="60.0" prefWidth="137.0" text="Print interest and fees" />
+      <Button layoutX="240.0" layoutY="129.0" prefHeight="60.0" prefWidth="229.0" text="Update Accounts with interest and fees" />
+      <TextField fx:id="outputTextField" layoutX="16.0" layoutY="250.0" prefHeight="200.0" prefWidth="564.0" />
+    </AnchorPane>
   </Tab>
-  <Tab text="Demo Meu">
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+
+  <Tab text="Demo MenuBar">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+      <MenuBar layoutX="31.0" layoutY="28.0">
+        <Menu text="Account">
+          <MenuItem text="Open" />
+          <MenuItem text="Close" />
+          <MenuItem text="Deposit" />
+          <MenuItem text="Withdraw" />
+          <MenuItem text="Load from file" />
+          <MenuItem text="Print all" />
+        </Menu>
+        <Menu text="Interest and Fees">
+          <MenuItem text="Print" />
+          <MenuItem text="Apply and Update Accounts" />
+        </Menu>
+      </MenuBar>
+      <TextField layoutX="17.0" layoutY="200" prefHeight="180.0" prefWidth="566.0" />
+    </AnchorPane>
   </Tab>
+
 </TabPane>

@@ -1,5 +1,6 @@
 package com.example.rubank_ui;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -24,5 +25,11 @@ public class HelloController {
                                 ((RadioButton) toggle).setDisable(true);
                         }
                 });
+        }
+
+        public void handleOpenAccount(ActionEvent event){
+
+
+
         }
 }

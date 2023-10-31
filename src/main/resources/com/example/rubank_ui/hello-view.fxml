@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
 
-
-<TabPane fx:controller="com.example.rubank_ui.HelloController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rubank_ui.HelloController">
   <Tab text="Open/Close">
-    <AnchorPane  minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
       <Label layoutX="121.0" layoutY="28.0" text="First Name" />
-      <TextField layoutX="198.0" layoutY="24.0" />
+      <Label fx:id="firstNameLabel" layoutX="198.0" layoutY="24.0" />
          <Label layoutX="121.0" layoutY="66.0" text="Last Name" />
          <Label layoutX="121.0" layoutY="101.0" text="Date of Birth" />
-         <TextField layoutX="198.0" layoutY="62.0" />
-         <DatePicker layoutX="198.0" layoutY="97.0" />
+         <Label fx:id="lastNameLabel" layoutX="198.0" layoutY="62.0" />
+         <DatePicker fx:id="DOBLabel" layoutX="198.0" layoutY="97.0" />
          <Label layoutX="114.0" layoutY="167.0" text="Account type" />
-      <RadioButton layoutX="198.0" layoutY="131.0" text="Checking" onAction="#handleOtherAccountSelection">
-            <toggleGroup>
+      <RadioButton layoutX="198.0" layoutY="131.0" onAction="#handleOtherAccountSelection" text="Checking">
+
+          <toggleGroup>
                <ToggleGroup fx:id="Account" />
             </toggleGroup></RadioButton>
-      <RadioButton layoutX="198.0" layoutY="155.0" text="Savings" toggleGroup="$Account"  onAction="#handleOtherAccountSelection"/>
-      <RadioButton layoutX="198.0" layoutY="179.0" text="Money Market" toggleGroup="$Account" onAction="#handleOtherAccountSelection" />
-        <RadioButton layoutX="198.0" layoutY="203.0" text="College Checking" toggleGroup="$Account" onAction="#handleCollegeCheckingSelection" />
-        <Button layoutX="198.0" layoutY="230.0" text="Open" />
+      <RadioButton layoutX="198.0" layoutY="155.0" onAction="#handleOtherAccountSelection" text="Savings" toggleGroup="$Account" />
+      <RadioButton layoutX="198.0" layoutY="179.0" onAction="#handleOtherAccountSelection" text="Money Market" toggleGroup="$Account" />
+        <RadioButton layoutX="198.0" layoutY="203.0" onAction="#handleCollegeCheckingSelection" text="College Checking" toggleGroup="$Account" />
+        <Button fx:id="openButton" layoutX="198.0" layoutY="230.0" text="Open" />
         <Button layoutX="255.0" layoutY="230.0" text="Close" />
         <Button layoutX="312.0" layoutY="230.0" text="Clear" />
-        <TextArea layoutX="12.0" layoutY="270" prefHeight="120.0" prefWidth="576.0" />
+        <TextArea fx:id="mainOutput" layoutX="12.0" layoutY="270" prefHeight="120.0" prefWidth="576.0" />
          <Label layoutX="340.0" layoutY="147.0" text="Amount" />
-         <TextField layoutX="395.0" layoutY="142.0" />
-         <RadioButton layoutX="368.0" layoutY="188.0" mnemonicParsing="false" disable="true" text="NB">
+         <Label fx:id="AmountLabel" layoutX="395.0" layoutY="142.0" />
+         <RadioButton disable="true" layoutX="368.0" layoutY="188.0" mnemonicParsing="false" text="NB">
             <toggleGroup>
                <ToggleGroup fx:id="Campus" />
             </toggleGroup></RadioButton>
-         <RadioButton layoutX="368.0" layoutY="212.0" mnemonicParsing="false" text="Newark" disable="true" toggleGroup="$Campus" />
-         <RadioButton layoutX="368.0" layoutY="234.0" mnemonicParsing="false" text="Camden"  disable="true" toggleGroup="$Campus" />
+         <RadioButton disable="true" layoutX="368.0" layoutY="212.0" mnemonicParsing="false" text="Newark" toggleGroup="$Campus" />
+         <RadioButton disable="true" layoutX="368.0" layoutY="234.0" mnemonicParsing="false" text="Camden" toggleGroup="$Campus" />
          <CheckBox layoutX="466.0" layoutY="188.0" mnemonicParsing="false" text=" loyal customer" />
 
     </AnchorPane>

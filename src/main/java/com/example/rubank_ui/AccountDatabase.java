@@ -13,11 +13,12 @@ public class AccountDatabase {
         accounts = new Account[INITIAL_CAPACITY];
         numAcct = 0;
     }
+
     private static final int NOT_FOUND = -1;//A constant indicating that an account was not found in the database.
 
     private static final int INITIAL_CAPACITY = 4;//The initial capacity of the accounts array.
 
-    private Account [] accounts; //list of various types of accounts
+    private Account[] accounts; //list of various types of accounts
     private int numAcct; //number of accounts in the array
 
     /**
@@ -56,7 +57,7 @@ public class AccountDatabase {
     /**
      * Increase the capacity of the accounts array by 4.
      */
-    private void grow(){
+    private void grow() {
         Account[] new_accounts = new Account[accounts.length + 4];
 
         // Copy elements from the old array to the new one
@@ -74,7 +75,7 @@ public class AccountDatabase {
      * @param account the account to check
      * @return true if the account is in the database, false otherwise
      */
-    public boolean contains(Account account){
+    public boolean contains(Account account) {
         int found = find(account);
         return found != NOT_FOUND;
     }
@@ -85,7 +86,7 @@ public class AccountDatabase {
      * @param account the account to be added
      * @return true if the account was successfully added, false otherwise
      */
-    public boolean open(Account account){
+    public boolean open(Account account) {
         int duplicateIndex = find(account);
         if (duplicateIndex != NOT_FOUND) {
             return false;
@@ -104,7 +105,7 @@ public class AccountDatabase {
      * @param account the account to be closed
      * @return true if the account was successfully closed, false otherwise
      */
-    public boolean close(Account account){
+    public boolean close(Account account) {
         int found = find(account);
         if (found == NOT_FOUND) {
             return false;
@@ -124,9 +125,9 @@ public class AccountDatabase {
      * @param account the account from which to withdraw funds
      * @return true if the withdrawal was successful, false otherwise
      */
-    public boolean withdraw(Account account){
-        for (int i = 0; i < numAcct; i++ ) {
-            if (accounts[i].equals(account)){
+    public boolean withdraw(Account account) {
+        for (int i = 0; i < numAcct; i++) {
+            if (accounts[i].equals(account)) {
                 if (accounts[i].withdraw(account.getBalance())) {
                     return true;
                 } else {
@@ -142,7 +143,7 @@ public class AccountDatabase {
      *
      * @param account the account in which to deposit funds
      */
-    public void deposit(Account account){
+    public void deposit(Account account) {
         boolean accountExists = false;
         for (int i = 0; i < numAcct; i++) {
             if (accounts[i].equals(account, 5)) {
@@ -166,11 +167,13 @@ public class AccountDatabase {
     /**
      * Print the accounts sorted by account type and profile.
      */
-    public void printSorted() {
+    public String printSorted() {
         if (numAcct == 0) {
-            System.out.println("Account Database is empty!");
+            return "Account Database is empty!";
         } else {
-            System.out.println("* Accounts sorted by account type and profile.");
+            StringBuilder output = new StringBuilder();
+            output.append("* Accounts sorted by account type and profile:\n");
+
             for (int i = 0; i < numAcct - 1; i++) {
                 boolean swapped = false;
                 for (int j = 0; j < numAcct - i - 1; j++) {
@@ -185,21 +188,29 @@ public class AccountDatabase {
                     break;
                 }
             }
+
             for (int i = 0; i < numAcct; i++) {
-                System.out.println(accounts[i].toString());
+                output.append(accounts[i].toString()).append("\n");
             }
-            System.out.println("*end of list.");
+            output.append("*end of list");
+
+            return output.toString();
         }
     }
+
 
     /**
      * Print a list of accounts with fees and monthly interest calculated.
      */
-    public void printFeesAndInterests(){
+    public String printFeesAndInterests() {
+        StringBuilder output = new StringBuilder();
+
         if (numAcct == 0) {
-            System.out.println("Account Database is empty!");
+            output.append("Account Database is empty!\n");
         } else {
-            System.out.println("*list of accounts with fee and monthly interest");
+            output.append("* List of accounts with fee and monthly interest:\n");
+
+            // Sort the accounts
             for (int i = 0; i < numAcct - 1; i++) {
                 boolean swapped = false;
                 for (int j = 0; j < numAcct - i - 1; j++) {
@@ -214,24 +225,35 @@ public class AccountDatabase {
                     break;
                 }
             }
-            for (int i = 0; i < numAcct; i++) {
-                double MFee = accounts[i].monthlyFee()+accounts[i].withdrawalFee();;
-                double MIntrestrate=accounts[i].monthlyInterest();
-                System.out.println(accounts[i].toString()+"::fee $"+String.format("%.2f", MFee)+ "::monthly interest $"+String.format("%.2f", MIntrestrate));
 
+            // Calculate fees and interest
+            for (int i = 0; i < numAcct; i++) {
+                double MFee = accounts[i].monthlyFee() + accounts[i].withdrawalFee();
+                double MIntrestrate = accounts[i].monthlyInterest();
+                output.append(accounts[i].toString());
+                output.append("::fee $").append(String.format("%.2f", MFee));
+                output.append("::monthly interest $").append(String.format("%.2f", MIntrestrate));
+                output.append("\n");
             }
-            System.out.println("*end of list.");
+
+            output.append("* End of list.\n");
         }
-    } //calculate interests/fees
+
+        return output.toString();
+    }
 
     /**
      * Print a list of accounts with fees and interests applied, updating the account balances.
      */
-    public void printUpdatedBalances() {
+    public String printUpdatedBalances() {
+        StringBuilder output = new StringBuilder();
+
         if (numAcct == 0) {
-            System.out.println("Account Database is empty!");
+            output.append("Account Database is empty!\n");
         } else {
-            System.out.println("*list of accounts with fees and interests applied.");
+            output.append("* List of accounts with fees and interests applied:\n");
+
+            // Sort the accounts
             for (int i = 0; i < numAcct - 1; i++) {
                 boolean swapped = false;
                 for (int j = 0; j < numAcct - i - 1; j++) {
@@ -246,20 +268,23 @@ public class AccountDatabase {
                     break;
                 }
             }
-            for (int i = 0; i < numAcct; i++) {
 
-                double MFee = accounts[i].monthlyFee()+accounts[i].withdrawalFee();
+            // Calculate fees and interest and update balances
+            for (int i = 0; i < numAcct; i++) {
+                double MFee = accounts[i].monthlyFee() + accounts[i].withdrawalFee();
                 double MIntrestrate = accounts[i].monthlyInterest();
-                accounts[i].balance= accounts[i].balance - MFee + MIntrestrate;
+                accounts[i].balance = accounts[i].balance - MFee + MIntrestrate;
 
                 if (accounts[i] instanceof MoneyMarket) {
                     ((MoneyMarket) accounts[i]).resetWithdrawal();
                 }
 
-                System.out.println(accounts[i].toString());
-
+                output.append(accounts[i].toString());
+                output.append("\n");
             }
-            System.out.println("*end of list.");
+
+            output.append("* End of list.\n");
         }
+        return output.toString();
     }
 }

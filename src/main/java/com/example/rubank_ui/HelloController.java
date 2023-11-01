@@ -6,7 +6,12 @@ import javafx.scene.control.*;
 
 public class HelloController {
 
+        public TextArea mainOutput;
+        public TextArea deposit_output;
+        public TextField outputTextField;
+
         @FXML
+
         private ToggleGroup Account;
 
         @FXML
@@ -64,6 +69,16 @@ public class HelloController {
 
                         }
                 });
+        }
+        @FXML
+        protected void clearAllFields() {
+                firstname.clear();
+                lastname.clear();
+                DOBLabel.getEditor().clear();
+                amount.clear();
+                Account.selectToggle(null);
+                Campus.selectToggle(null);
+                loyalCustomerCheckbox.setSelected(false);
         }
 
         @FXML
@@ -194,13 +209,170 @@ public class HelloController {
 
                         if (account != null) {
                                 if (accountDatabase.open(account)) {
-                                        System.out.println(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ")" + " opened.");
+                                        mainOutput.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ")" + " opened.\n");
                                 } else {
-                                        System.out.println(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ")" + " is already in the database.");
+                                        mainOutput.appendText("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
                                 }
                         }
                 } else {
                         System.out.println("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
                 }
+        }
+        @FXML
+        protected void closeAccount() {
+                RadioButton selectedRadioButton = (RadioButton) Account.getSelectedToggle();
+                String selectedAccountType = selectedRadioButton.getText();
+
+                String firstName = firstname.getText();
+                String lastName = lastname.getText();
+                String dateString = DOBLabel.getValue().toString();
+                Date date = Date.fromDateStr(dateString);
+
+                if (date.isFutureDate()) {
+
+                        Profile profile = new Profile(firstName, lastName, date);
+
+                        Account accountToClose = switch (selectedAccountType) {
+                                case "Checking" -> new Checking(profile ,0.0);
+                                case "Money Market" -> new MoneyMarket(profile, 0.0, true, 0);
+                                case "Savings" -> new Savings(profile, 0.0, false);
+                                case "College Checking" -> new CollegeChecking(profile, 0.0, com.example.rubank_ui.Campus.NEW_BRUNSWICK);
+                                default -> null;
+                        };
+
+                        if (accountToClose != null) {
+                                if (accountDatabase.close(accountToClose)) {
+                                        mainOutput.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ")" + " has been closed.\n");
+                                } else {
+                                        mainOutput.appendText("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                                }
+                        } else {
+                                System.out.println("Invalid account type: " + selectedAccountType);
+                        }
+                } else {
+                        System.out.println("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
+                }
+        }
+        @FXML
+        protected void depositAccount() {
+                RadioButton selectedRadioButton = (RadioButton) Account.getSelectedToggle();
+                String selectedAccountType = selectedRadioButton.getText();
+
+                String firstName = firstname.getText();
+                String lastName = lastname.getText();
+                String dateString = DOBLabel.getValue().toString();
+                Date date = Date.fromDateStr(dateString);
+
+                if (date.isFutureDate()) {
+                        double depositAmount;
+                        try {
+                                depositAmount = Double.parseDouble(amount.getText());
+                        } catch (NumberFormatException e) {
+                                deposit_output.appendText("Not a valid amount.\n");
+                                return;
+                        }
+
+                        if (depositAmount <= 0.0) {
+                                deposit_output.appendText("Deposit - amount cannot be 0 or negative.\n");
+                                return;
+                        }
+
+                        Profile profile = new Profile(firstName, lastName, date);
+
+                        Account shellAccount = switch (selectedAccountType) {
+                                case "Checking" -> new Checking(profile, depositAmount);
+                                case "Money Market" -> new MoneyMarket(profile, depositAmount, true, 0);
+                                case "Savings" -> new Savings(profile, depositAmount, false);
+                                case "College Checking" -> new CollegeChecking(profile, depositAmount, com.example.rubank_ui.Campus.NEW_BRUNSWICK);
+                                default -> null;
+                        };
+
+                        if (shellAccount != null) {
+                                accountDatabase.deposit(shellAccount);
+                                deposit_output.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") Deposit - balance updated.\n");
+                        } else {
+                                deposit_output.appendText("Invalid account type: " + selectedAccountType + "\n");
+                        }
+                } else {
+                        deposit_output.appendText("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                }
+        }
+
+        @FXML
+        protected void withdrawalAccount() {
+                RadioButton selectedRadioButton = (RadioButton) Account.getSelectedToggle();
+                String selectedAccountType = selectedRadioButton.getText();
+
+                String firstName = firstname.getText();
+                String lastName = lastname.getText();
+                String dateString = DOBLabel.getValue().toString();
+                Date date = Date.fromDateStr(dateString);
+
+
+
+                if (date.isFutureDate()) {
+                        double withdrawalAmount;
+                        try {
+                                withdrawalAmount = Double.parseDouble(amount.getText());
+                        } catch (NumberFormatException e) {
+                                deposit_output.appendText("Not a valid amount.\n");
+                                return;
+                        }
+
+                        if (withdrawalAmount <= 0.0) {
+                                deposit_output.appendText("Withdrawal - amount cannot be 0 or negative.\n");
+                                return;
+                        }
+
+                        Profile profile = new Profile(firstName, lastName, date);
+
+                        Account shellAccount = switch (selectedAccountType) {
+                                case "Checking" -> new Checking(profile, withdrawalAmount);
+                                case "Money Market" -> new MoneyMarket(profile, withdrawalAmount, true, 0);
+                                case "Savings" -> new Savings(profile, withdrawalAmount, false);
+                                case "College Checking" -> new CollegeChecking(profile, withdrawalAmount, com.example.rubank_ui.Campus.NEW_BRUNSWICK);
+                                default -> null;
+                        };
+
+                        boolean accountExists = false;
+                        for (int i = 0; i < accountDatabase.getNumAcct(); i++) {
+                                if (accountDatabase.getAccounts()[i].equals(shellAccount, 5)) {
+                                        accountExists = true;
+                                        boolean withdrawalStatus = accountDatabase.withdraw(shellAccount);
+                                        if (withdrawalStatus) {
+                                                if (selectedAccountType.equals("Money Market")) {
+                                                        MoneyMarket moneyMarketAccount = (MoneyMarket) accountDatabase.getAccounts()[i];
+                                                        moneyMarketAccount.increaseWithdrawal();
+                                                }
+                                                deposit_output.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") Withdrawal - balance updated.\n");
+                                        } else {
+                                                deposit_output.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") Withdrawal - insufficient funds.\n");
+                                        }
+                                }
+                        }
+
+                        if (!accountExists) {
+                                deposit_output.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") is not in the database.\n");
+                        }
+                } else {
+                        deposit_output.appendText("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                }
+        }
+        @FXML
+        protected void printSortedAccounts() {
+                String sortedAccounts = accountDatabase.printSorted();
+                outputTextField.appendText(sortedAccounts);
+        }
+
+        @FXML
+        protected void printFeesAndInterests() {
+                String output = accountDatabase.printFeesAndInterests();
+                outputTextField.appendText(output);
+        }
+
+        @FXML
+        protected void printUpdatedBalances() {
+                String output = accountDatabase.printUpdatedBalances();
+                outputTextField.appendText(output);
         }
 }

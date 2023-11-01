@@ -230,10 +230,10 @@ public class AccountDatabase {
             for (int i = 0; i < numAcct; i++) {
                 double MFee = accounts[i].monthlyFee() + accounts[i].withdrawalFee();
                 double MIntrestrate = accounts[i].monthlyInterest();
-                output.append(accounts[i].toString());
-                output.append("::fee $").append(String.format("%.2f", MFee));
-                output.append("::monthly interest $").append(String.format("%.2f", MIntrestrate));
-                output.append("\n");
+                output.append(accounts[i].toString())
+                        .append("::fee $").append(String.format("%.2f", MFee))
+                        .append("::monthly interest $").append(String.format("%.2f", MIntrestrate))
+                        .append("\n");
             }
 
             output.append("* End of list.\n");
@@ -279,8 +279,8 @@ public class AccountDatabase {
                     ((MoneyMarket) accounts[i]).resetWithdrawal();
                 }
 
-                output.append(accounts[i].toString());
-                output.append("\n");
+                output.append(accounts[i].toString()).append("\n");
+
             }
 
             output.append("* End of list.\n");

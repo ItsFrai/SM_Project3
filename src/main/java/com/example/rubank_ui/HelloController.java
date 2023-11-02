@@ -539,6 +539,7 @@ public class HelloController {
                                         accountDatabase.open(account);
                                 }
                         }
+                        outputTextArea.appendText("Accounts loaded.");
                 }
         }
 }

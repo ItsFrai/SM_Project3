@@ -49,12 +49,24 @@ public class Date implements Comparable<Date> {
      * @return A Date object if parsing, returns null if not successful
      */
     public static Date fromDateStr(String dateString) {
-        String[] parts = dateString.split("-");
-        if (parts.length == 3) {
-            int year = Integer.parseInt(parts[0]);
-            int month = Integer.parseInt(parts[1]);
-            int day = Integer.parseInt(parts[2]);
-            return new Date(year, month, day);
+
+        if (dateString.contains("-")) {
+            String[] parts = dateString.split("-");
+            if (parts.length == 3) {
+                int year = Integer.parseInt(parts[0]);
+                int month = Integer.parseInt(parts[1]);
+                int day = Integer.parseInt(parts[2]);
+                return new Date(year, month, day);
+            }
+        } else {
+            String[] parts = dateString.split("/");
+            if (parts.length == 3) {
+                int month = Integer.parseInt(parts[0]);
+                int day = Integer.parseInt(parts[1]);
+                int year = Integer.parseInt(parts[2]);
+                return new Date(year, month, day);
+            }
+            return null;
         }
         return null;
     }

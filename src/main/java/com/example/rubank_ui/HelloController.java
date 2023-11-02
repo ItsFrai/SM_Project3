@@ -2,6 +2,13 @@ package com.example.rubank_ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 
 public class HelloController {
@@ -49,6 +56,7 @@ public class HelloController {
                         }
                 });
         }
+
         @FXML
         void handleOtherAccountSelection() {
 
@@ -70,6 +78,7 @@ public class HelloController {
                         }
                 });
         }
+
         @FXML
         protected void clearAllFields() {
                 firstname.clear();
@@ -89,7 +98,6 @@ public class HelloController {
                 String firstName = firstname.getText();
                 String lastName = lastname.getText();
                 String dateString = DOBLabel.getValue().toString();
-                System.out.println(dateString);
                 Date date = Date.fromDateStr(dateString);
 
                 if (date.isValid() && date.isFutureDate()) {
@@ -166,7 +174,7 @@ public class HelloController {
                                                 try {
                                                         double deposit = Double.parseDouble(amount.getText());
                                                         RadioButton selectedRadioButtonforCampus = (RadioButton) Campus.getSelectedToggle();
-                                                        String campusName= selectedRadioButtonforCampus.getText();
+                                                        String campusName = selectedRadioButtonforCampus.getText();
 
                                                         Campus campus = null;
                                                         switch (campusName) {
@@ -218,6 +226,7 @@ public class HelloController {
                         System.out.println("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
                 }
         }
+
         @FXML
         protected void closeAccount() {
                 RadioButton selectedRadioButton = (RadioButton) Account.getSelectedToggle();
@@ -233,7 +242,7 @@ public class HelloController {
                         Profile profile = new Profile(firstName, lastName, date);
 
                         Account accountToClose = switch (selectedAccountType) {
-                                case "Checking" -> new Checking(profile ,0.0);
+                                case "Checking" -> new Checking(profile, 0.0);
                                 case "Money Market" -> new MoneyMarket(profile, 0.0, true, 0);
                                 case "Savings" -> new Savings(profile, 0.0, false);
                                 case "College Checking" -> new CollegeChecking(profile, 0.0, com.example.rubank_ui.Campus.NEW_BRUNSWICK);
@@ -253,6 +262,7 @@ public class HelloController {
                         System.out.println("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
                 }
         }
+
         @FXML
         protected void depositAccount() {
                 RadioButton selectedRadioButton = (RadioButton) Account.getSelectedToggle();
@@ -309,7 +319,6 @@ public class HelloController {
                 Date date = Date.fromDateStr(dateString);
 
 
-
                 if (date.isFutureDate()) {
                         double withdrawalAmount;
                         try {
@@ -358,6 +367,7 @@ public class HelloController {
                         deposit_output.appendText("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
                 }
         }
+
         @FXML
         protected void printSortedAccounts() {
                 String sortedAccounts = accountDatabase.printSorted();
@@ -374,5 +384,153 @@ public class HelloController {
         protected void printUpdatedBalances() {
                 String output = accountDatabase.printUpdatedBalances();
                 outputTextArea.appendText(output);
+        }
+
+        @FXML
+        protected void load_accounts() throws FileNotFoundException {
+                FileChooser fileChooser = new FileChooser();
+                File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+                if (selectedFile != null) {
+                        Scanner scanner = new Scanner(selectedFile);
+                        while (scanner.hasNextLine()) {
+                                String line = scanner.nextLine();
+                                StringTokenizer tokenizer = new StringTokenizer(line, ",");
+
+                                if (tokenizer.countTokens() < 5) {
+                                        System.out.println("Missing data for opening an account.");
+                                        break;
+                                }
+                                String accountType = tokenizer.nextToken();
+                                String firstName = tokenizer.nextToken();
+                                String lastName = tokenizer.nextToken();
+                                String dateString = tokenizer.nextToken();
+                                Date date = Date.fromDateStr(dateString);
+
+                                if (!date.isValid()) {
+                                        System.out.println("DOB invalid: " + dateString + " not a valid calendar date!");
+                                        break;
+                                }
+                                if (!date.isFutureDate()) {
+                                        System.out.println("DOB invalid: " + dateString + " cannot be today or a future day.");
+                                        break;
+                                }
+                                int age = date.calculateAge();
+
+                                Account account = null;
+                                boolean invalidcode = false;
+                                switch (accountType) {
+                                        case "C":
+                                                if (age < 16) {
+                                                        System.out.println("DOB invalid: " + dateString + " under 16.");
+                                                        break;
+                                                }
+                                                try {
+                                                        double deposit = Double.parseDouble(tokenizer.nextToken());
+                                                        if (deposit <= 0) {
+                                                                System.out.println("Initial deposit cannot be 0 or negative.");
+                                                                break;
+                                                        }
+                                                        Profile profile = new Profile(firstName, lastName, date);
+                                                        account = new Checking(profile, deposit);
+                                                } catch (NumberFormatException e) {
+                                                        System.out.println("Not a valid amount.");
+                                                }
+                                                break;
+
+                                        case "MM":
+                                                if (age < 16) {
+                                                        System.out.println("DOB invalid: " + dateString + " under 16.");
+                                                        break;
+                                                }
+                                                try {
+                                                        double deposit = Double.parseDouble(tokenizer.nextToken());
+                                                        if (deposit <= 0) {
+                                                                System.out.println("Initial deposit cannot be 0 or negative.");
+                                                                break;
+                                                        }
+                                                        if (deposit < 2000) {
+                                                                System.out.println("Minimum of $2000 to open a Money Market account.");
+                                                                break;
+                                                        }
+                                                        Profile profile = new Profile(firstName, lastName, date);
+                                                        int withdrawal = 0;
+                                                        account = new MoneyMarket(profile, deposit, true, withdrawal);
+                                                } catch (NumberFormatException e) {
+                                                        System.out.println("Not a valid amount.");
+                                                }
+                                                break;
+
+                                        case "S":
+                                                if (age < 16) {
+                                                        System.out.println("DOB invalid: " + dateString + " under 16.");
+                                                        break;
+                                                }
+                                                try {
+                                                        double deposit = Double.parseDouble(tokenizer.nextToken());
+                                                        int code = Integer.parseInt(tokenizer.nextToken());
+                                                        boolean isLoyal = code == 1;
+                                                        if (deposit <= 0) {
+                                                                System.out.println("Initial deposit cannot be 0 or negative.");
+                                                                break;
+                                                        }
+                                                        Profile profile = new Profile(firstName, lastName, date);
+                                                        account = new Savings(profile, deposit, isLoyal);
+
+                                                        boolean contains = accountDatabase.contains(account);
+
+                                                } catch (NumberFormatException e) {
+                                                        System.out.println("Not a valid amount.");
+                                                }
+                                                break;
+
+                                        case "CC":
+                                                if (age < 16) {
+                                                        System.out.println("DOB invalid: " + dateString + " under 16.");
+                                                        break;
+                                                }
+                                                if (age >= 24) {
+                                                        System.out.println("DOB invalid: " + dateString + " over 24.");
+                                                        break;
+                                                }
+                                                try {
+                                                        double deposit = Double.parseDouble(tokenizer.nextToken());
+                                                        int code = Integer.parseInt(tokenizer.nextToken());
+                                                        Campus campus = null;
+                                                        switch (code) {
+                                                                case 0:
+                                                                        campus = com.example.rubank_ui.Campus.NEW_BRUNSWICK;
+                                                                        break;
+                                                                case 1:
+                                                                        campus = com.example.rubank_ui.Campus.NEWARK;
+                                                                        break;
+                                                                case 2:
+                                                                        campus = com.example.rubank_ui.Campus.CAMDEN;
+                                                                        break;
+                                                                default:
+                                                                        System.out.println("Invalid campus code.");
+                                                                        invalidcode = true;
+                                                                        break;
+                                                        }
+                                                        if (deposit <= 0) {
+                                                                System.out.println("Initial deposit cannot be 0 or negative.");
+                                                                break;
+                                                        }
+                                                        Profile profile = new Profile(firstName, lastName, date);
+                                                        account = new CollegeChecking(profile, deposit, campus);
+                                                } catch (NumberFormatException e) {
+                                                        System.out.println("Not a valid amount.");
+                                                }
+                                                break;
+                                }
+                                if (invalidcode) {
+                                        break;
+                                }
+
+                                if (account != null) {
+                                        accountDatabase.open(account);
+                                }
+                        }
+                }
         }
 }

@@ -10,10 +10,11 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextArea?>
+
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rubank_ui.HelloController">
   <Tab text="Open/Close">
@@ -77,7 +78,7 @@
       <Button layoutX="246.0" layoutY="36.0" prefHeight="55.0" prefWidth="175.0" text="Load accounts from a file" />
       <Button layoutX="62.0" layoutY="129.0" prefHeight="60.0" prefWidth="137.0" text="Print interest and fees" onAction="#printFeesAndInterests"/>
       <Button layoutX="240.0" layoutY="129.0" prefHeight="60.0" prefWidth="229.0" text="Update Accounts with interest and fees" onAction="#printUpdatedBalances"/>
-      <TextField fx:id="outputTextField" layoutX="16.0" layoutY="250.0" prefHeight="200.0" prefWidth="564.0" />
+      <TextArea fx:id="outputTextArea" layoutX="16.0" layoutY="250.0" prefHeight="200.0" prefWidth="564.0" />
     </AnchorPane>
   </Tab>
 

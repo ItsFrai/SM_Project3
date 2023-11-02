@@ -8,7 +8,7 @@ public class HelloController {
 
         public TextArea mainOutput;
         public TextArea deposit_output;
-        public TextField outputTextField;
+        public TextArea outputTextArea;
 
         @FXML
 
@@ -361,18 +361,18 @@ public class HelloController {
         @FXML
         protected void printSortedAccounts() {
                 String sortedAccounts = accountDatabase.printSorted();
-                outputTextField.appendText(sortedAccounts);
+                outputTextArea.appendText(sortedAccounts);
         }
 
         @FXML
         protected void printFeesAndInterests() {
                 String output = accountDatabase.printFeesAndInterests();
-                outputTextField.appendText(output);
+                outputTextArea.appendText(output);
         }
 
         @FXML
         protected void printUpdatedBalances() {
                 String output = accountDatabase.printUpdatedBalances();
-                outputTextField.appendText(output);
+                outputTextArea.appendText(output);
         }
 }

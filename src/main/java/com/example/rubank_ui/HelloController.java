@@ -89,6 +89,14 @@ public class HelloController {
                 Campus.selectToggle(null);
                 loyalCustomerCheckbox.setSelected(false);
         }
+        @FXML
+        private void showAlert(String message) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText(message);
+                alert.showAndWait();
+        }
 
         @FXML
         protected void openAccount() {
@@ -112,13 +120,13 @@ public class HelloController {
                                                                 Profile profile = new Profile(firstName, lastName, date);
                                                                 account = new Checking(profile, deposit);
                                                         } else {
-                                                                System.out.println("Initial deposit cannot be 0 or negative.");
+                                                                showAlert("Initial deposit cannot be 0 or negative.");
                                                         }
                                                 } catch (NumberFormatException e) {
-                                                        System.out.println("Not a valid amount.");
+                                                        showAlert("Not a valid amount.");
                                                 }
                                         } else {
-                                                System.out.println("DOB invalid: " + dateString + " under 16.");
+                                                showAlert("DOB invalid: " + dateString + " under 16.");
                                         }
                                         break;
 
@@ -132,16 +140,16 @@ public class HelloController {
                                                                         int withdrawal = 0;
                                                                         account = new MoneyMarket(profile, deposit, true, withdrawal);
                                                                 } else {
-                                                                        System.out.println("Minimum of $2000 to open a Money Market account.");
+                                                                        showAlert("Minimum of $2000 to open a Money Market account.");
                                                                 }
                                                         } else {
-                                                                System.out.println("Initial deposit cannot be 0 or negative.");
+                                                                showAlert("Initial deposit cannot be 0 or negative.");
                                                         }
                                                 } catch (NumberFormatException e) {
-                                                        System.out.println("Not a valid amount.");
+                                                        showAlert("Not a valid amount.");
                                                 }
                                         } else {
-                                                System.out.println("DOB invalid: " + dateString + " under 16.");
+                                                showAlert("DOB invalid: " + dateString + " under 16.");
                                         }
                                         break;
 
@@ -155,17 +163,17 @@ public class HelloController {
                                                                 account = new Savings(profile, deposit, isLoyal);
 
                                                                 if (accountDatabase.contains(account)) {
-                                                                        System.out.println("Account already exists in the database.");
+                                                                        showAlert("Account already exists in the database.");
                                                                         break;
                                                                 }
                                                         } else {
-                                                                System.out.println("Initial deposit cannot be 0 or negative.");
+                                                                showAlert("Initial deposit cannot be 0 or negative.");
                                                         }
                                                 } catch (NumberFormatException e) {
-                                                        System.out.println("Not a valid amount.");
+                                                        showAlert("Not a valid amount.");
                                                 }
                                         } else {
-                                                System.out.println("DOB invalid: " + dateString + " under 16.");
+                                                showAlert("DOB invalid: " + dateString + " under 16.");
                                         }
                                         break;
 
@@ -188,7 +196,7 @@ public class HelloController {
                                                                         campus = com.example.rubank_ui.Campus.CAMDEN;
                                                                         break;
                                                                 default:
-                                                                        System.out.println("Invalid campus code.");
+                                                                        showAlert("Invalid campus code.");
                                                                         break;
                                                         }
                                                         if (campus != null) {
@@ -196,34 +204,34 @@ public class HelloController {
                                                                         Profile profile = new Profile(firstName, lastName, date);
                                                                         account = new CollegeChecking(profile, deposit, campus);
                                                                 } else {
-                                                                        System.out.println("Initial deposit cannot be 0 or negative.");
+                                                                        showAlert("Initial deposit cannot be 0 or negative.");
                                                                 }
                                                         }
                                                 } catch (NumberFormatException e) {
-                                                        System.out.println("Not a valid amount.");
+                                                        showAlert("Not a valid amount.");
                                                 }
                                         } else {
                                                 if (age < 16) {
-                                                        System.out.println("DOB invalid: " + dateString + " under 16.");
+                                                        showAlert("DOB invalid: " + dateString + " under 16.");
                                                 } else {
-                                                        System.out.println("DOB invalid: " + dateString + " over 24.");
+                                                        showAlert("DOB invalid: " + dateString + " over 24.");
                                                 }
                                         }
                                         break;
 
                                 default:
-                                        System.out.println("Invalid account type.");
+                                        showAlert("Invalid account type.");
                         }
 
                         if (account != null) {
                                 if (accountDatabase.open(account)) {
                                         mainOutput.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ")" + " opened.\n");
                                 } else {
-                                        mainOutput.appendText("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
                                 }
                         }
                 } else {
-                        System.out.println("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
+                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
                 }
         }
 
@@ -253,13 +261,13 @@ public class HelloController {
                                 if (accountDatabase.close(accountToClose)) {
                                         mainOutput.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ")" + " has been closed.\n");
                                 } else {
-                                        mainOutput.appendText("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
                                 }
                         } else {
-                                System.out.println("Invalid account type: " + selectedAccountType);
+                                showAlert("Invalid account type: " + selectedAccountType);
                         }
                 } else {
-                        System.out.println("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
+                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
                 }
         }
 
@@ -278,12 +286,12 @@ public class HelloController {
                         try {
                                 depositAmount = Double.parseDouble(amount.getText());
                         } catch (NumberFormatException e) {
-                                deposit_output.appendText("Not a valid amount.\n");
+                                showAlert("Not a valid amount.\n");
                                 return;
                         }
 
                         if (depositAmount <= 0.0) {
-                                deposit_output.appendText("Deposit - amount cannot be 0 or negative.\n");
+                                showAlert("Deposit - amount cannot be 0 or negative.\n");
                                 return;
                         }
 
@@ -301,10 +309,10 @@ public class HelloController {
                                 accountDatabase.deposit(shellAccount);
                                 deposit_output.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") Deposit - balance updated.\n");
                         } else {
-                                deposit_output.appendText("Invalid account type: " + selectedAccountType + "\n");
+                                showAlert("Invalid account type: " + selectedAccountType + "\n");
                         }
                 } else {
-                        deposit_output.appendText("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
                 }
         }
 
@@ -324,12 +332,12 @@ public class HelloController {
                         try {
                                 withdrawalAmount = Double.parseDouble(amount.getText());
                         } catch (NumberFormatException e) {
-                                deposit_output.appendText("Not a valid amount.\n");
+                                showAlert("Not a valid amount.");
                                 return;
                         }
 
                         if (withdrawalAmount <= 0.0) {
-                                deposit_output.appendText("Withdrawal - amount cannot be 0 or negative.\n");
+                                showAlert("Withdrawal - amount cannot be 0 or negative.");
                                 return;
                         }
 
@@ -364,7 +372,7 @@ public class HelloController {
                                 deposit_output.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") is not in the database.\n");
                         }
                 } else {
-                        deposit_output.appendText("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
                 }
         }
 
@@ -398,7 +406,7 @@ public class HelloController {
                                 StringTokenizer tokenizer = new StringTokenizer(line, ",");
 
                                 if (tokenizer.countTokens() < 5) {
-                                        System.out.println("Missing data for opening an account.");
+                                        showAlert("Missing data for opening an account.");
                                         break;
                                 }
                                 String accountType = tokenizer.nextToken();
@@ -408,11 +416,11 @@ public class HelloController {
                                 Date date = Date.fromDateStr(dateString);
 
                                 if (!date.isValid()) {
-                                        System.out.println("DOB invalid: " + dateString + " not a valid calendar date!");
+                                        showAlert("DOB invalid: " + dateString + " not a valid calendar date!");
                                         break;
                                 }
                                 if (!date.isFutureDate()) {
-                                        System.out.println("DOB invalid: " + dateString + " cannot be today or a future day.");
+                                        showAlert("DOB invalid: " + dateString + " cannot be today or a future day.");
                                         break;
                                 }
                                 int age = date.calculateAge();
@@ -422,48 +430,48 @@ public class HelloController {
                                 switch (accountType) {
                                         case "C":
                                                 if (age < 16) {
-                                                        System.out.println("DOB invalid: " + dateString + " under 16.");
+                                                        showAlert("DOB invalid: " + dateString + " under 16.");
                                                         break;
                                                 }
                                                 try {
                                                         double deposit = Double.parseDouble(tokenizer.nextToken());
                                                         if (deposit <= 0) {
-                                                                System.out.println("Initial deposit cannot be 0 or negative.");
+                                                                showAlert("Initial deposit cannot be 0 or negative.");
                                                                 break;
                                                         }
                                                         Profile profile = new Profile(firstName, lastName, date);
                                                         account = new Checking(profile, deposit);
                                                 } catch (NumberFormatException e) {
-                                                        System.out.println("Not a valid amount.");
+                                                        showAlert("Not a valid amount.");
                                                 }
                                                 break;
 
                                         case "MM":
                                                 if (age < 16) {
-                                                        System.out.println("DOB invalid: " + dateString + " under 16.");
+                                                        showAlert("DOB invalid: " + dateString + " under 16.");
                                                         break;
                                                 }
                                                 try {
                                                         double deposit = Double.parseDouble(tokenizer.nextToken());
                                                         if (deposit <= 0) {
-                                                                System.out.println("Initial deposit cannot be 0 or negative.");
+                                                                showAlert("Initial deposit cannot be 0 or negative.");
                                                                 break;
                                                         }
                                                         if (deposit < 2000) {
-                                                                System.out.println("Minimum of $2000 to open a Money Market account.");
+                                                                showAlert("Minimum of $2000 to open a Money Market account.");
                                                                 break;
                                                         }
                                                         Profile profile = new Profile(firstName, lastName, date);
                                                         int withdrawal = 0;
                                                         account = new MoneyMarket(profile, deposit, true, withdrawal);
                                                 } catch (NumberFormatException e) {
-                                                        System.out.println("Not a valid amount.");
+                                                        showAlert("Not a valid amount.");
                                                 }
                                                 break;
 
                                         case "S":
                                                 if (age < 16) {
-                                                        System.out.println("DOB invalid: " + dateString + " under 16.");
+                                                        showAlert("DOB invalid: " + dateString + " under 16.");
                                                         break;
                                                 }
                                                 try {
@@ -471,7 +479,7 @@ public class HelloController {
                                                         int code = Integer.parseInt(tokenizer.nextToken());
                                                         boolean isLoyal = code == 1;
                                                         if (deposit <= 0) {
-                                                                System.out.println("Initial deposit cannot be 0 or negative.");
+                                                                showAlert("Initial deposit cannot be 0 or negative.");
                                                                 break;
                                                         }
                                                         Profile profile = new Profile(firstName, lastName, date);
@@ -480,17 +488,17 @@ public class HelloController {
                                                         boolean contains = accountDatabase.contains(account);
 
                                                 } catch (NumberFormatException e) {
-                                                        System.out.println("Not a valid amount.");
+                                                        showAlert("Not a valid amount.");
                                                 }
                                                 break;
 
                                         case "CC":
                                                 if (age < 16) {
-                                                        System.out.println("DOB invalid: " + dateString + " under 16.");
+                                                        showAlert("DOB invalid: " + dateString + " under 16.");
                                                         break;
                                                 }
                                                 if (age >= 24) {
-                                                        System.out.println("DOB invalid: " + dateString + " over 24.");
+                                                        showAlert("DOB invalid: " + dateString + " over 24.");
                                                         break;
                                                 }
                                                 try {
@@ -508,18 +516,18 @@ public class HelloController {
                                                                         campus = com.example.rubank_ui.Campus.CAMDEN;
                                                                         break;
                                                                 default:
-                                                                        System.out.println("Invalid campus code.");
+                                                                        showAlert("Invalid campus code.");
                                                                         invalidcode = true;
                                                                         break;
                                                         }
                                                         if (deposit <= 0) {
-                                                                System.out.println("Initial deposit cannot be 0 or negative.");
+                                                                showAlert("Initial deposit cannot be 0 or negative.");
                                                                 break;
                                                         }
                                                         Profile profile = new Profile(firstName, lastName, date);
                                                         account = new CollegeChecking(profile, deposit, campus);
                                                 } catch (NumberFormatException e) {
-                                                        System.out.println("Not a valid amount.");
+                                                        showAlert("Not a valid amount.");
                                                 }
                                                 break;
                                 }

@@ -304,12 +304,13 @@ public class HelloController {
                                 case "College Checking" -> new CollegeChecking(profile, depositAmount, com.example.rubank_ui.Campus.NEW_BRUNSWICK);
                                 default -> null;
                         };
-
-                        if (shellAccount != null) {
-                                accountDatabase.deposit(shellAccount);
-                                deposit_output.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") Deposit - balance updated.\n");
+                        String depositMessage = accountDatabase.deposit(shellAccount);
+                        if (shellAccount.getBalance() == 0) {
+                                showAlert(depositMessage);
+                        } else if (depositMessage.contains("CC") || depositMessage.contains("C") || depositMessage.contains("MM") || depositMessage.contains("S")) {
+                                showAlert(depositMessage);
                         } else {
-                                showAlert("Invalid account type: " + selectedAccountType + "\n");
+                                deposit_output.appendText(depositMessage);
                         }
                 } else {
                         showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");

@@ -143,24 +143,26 @@ public class AccountDatabase {
      *
      * @param account the account in which to deposit funds
      */
-    public void deposit(Account account) {
+    public String deposit(Account account) {
+        String message = "";
         boolean accountExists = false;
         for (int i = 0; i < numAcct; i++) {
             if (accounts[i].equals(account, 5)) {
                 accountExists = true;
                 accounts[i].deposit(account.getBalance());
-                String message = account.getHolder().toString() + " (" + account.short_AccountType() + ") ";
+                String accountMessage = account.getHolder().toString() + " (" + account.short_AccountType() + ") ";
                 if (account.getBalance() == 0) {
-                    System.out.println(message + "is not in the database.");
+                    message = (accountMessage + "is not in the database.");
                 } else {
-                    System.out.println(message + "Deposit - balance updated.");
+                    message = (accountMessage + "Deposit - balance updated.\n");
                 }
                 break;
             }
         }
         if (!accountExists) {
-            System.out.println(account.getHolder().toString() + " (" + account.short_AccountType() + ") is not in the database.");
+            message = account.getHolder().toString() + " (" + account.short_AccountType() + ") is not in the database.";
         }
+        return message;
     }
 
 

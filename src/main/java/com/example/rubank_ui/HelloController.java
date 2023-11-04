@@ -100,14 +100,41 @@ public class HelloController {
 
         @FXML
         protected void openAccount() {
+                boolean errorEncountered = false;
+
                 RadioButton selectedRadioButton = (RadioButton) Account.getSelectedToggle();
-                String selectedAccountType = selectedRadioButton.getText();
+                String selectedAccountType = null;
+                if (selectedRadioButton != null) {
+                        selectedAccountType = selectedRadioButton.getText();
+                } else {
+                        showAlert("Missing data for opening an account.");
+                        errorEncountered = true;
+                }
 
                 String firstName = firstname.getText();
-                String lastName = lastname.getText();
-                String dateString = DOBLabel.getValue().toString();
-                Date date = Date.fromDateStr(dateString);
 
+                if (firstName == null || firstName.isEmpty()) {
+                        if (!errorEncountered) {
+                                showAlert("Missing data for opening an account.");
+                                errorEncountered = true;
+                        }
+                }
+                String lastName = lastname.getText();
+                if (lastName == null || lastName.isEmpty()) {
+                        if (!errorEncountered) {
+                                showAlert("Missing data for opening an account.");
+                                errorEncountered = true;
+                        }
+                }
+                String dateString = DOBLabel.getValue() != null ? DOBLabel.getValue().toString() : null;
+                Date date = null;
+                if (dateString != null) {
+                        date = Date.fromDateStr(dateString);
+                } else {
+                        if (!errorEncountered) {
+                                showAlert("Missing data for opening an account.");
+                        }
+                }
                 if (date.isValid() && date.isFutureDate()) {
                         int age = date.calculateAge();
                         Account account = null;
@@ -123,7 +150,7 @@ public class HelloController {
                                                                 showAlert("Initial deposit cannot be 0 or negative.");
                                                         }
                                                 } catch (NumberFormatException e) {
-                                                        showAlert("Not a valid amount.");
+                                                        showAlert("Not a valid amount or missing deposit amount.");
                                                 }
                                         } else {
                                                 showAlert("DOB invalid: " + dateString + " under 16.");
@@ -225,7 +252,7 @@ public class HelloController {
 
                         if (account != null) {
                                 if (accountDatabase.open(account)) {
-                                        mainOutput.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ")" + " opened.\n");
+                                        mainOutput.appendText(firstName + " " + lastName + " " + dateString + " (" + account.short_AccountType() + ")" + " opened.\n");
                                 } else {
                                         showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
                                 }
@@ -237,14 +264,41 @@ public class HelloController {
 
         @FXML
         protected void closeAccount() {
+                boolean errorEncountered = false;
+
                 RadioButton selectedRadioButton = (RadioButton) Account.getSelectedToggle();
-                String selectedAccountType = selectedRadioButton.getText();
+                String selectedAccountType = null;
+                if (selectedRadioButton != null) {
+                        selectedAccountType = selectedRadioButton.getText();
+                } else {
+                        showAlert("Missing data for opening an account.");
+                        errorEncountered = true;
+                }
 
                 String firstName = firstname.getText();
-                String lastName = lastname.getText();
-                String dateString = DOBLabel.getValue().toString();
-                Date date = Date.fromDateStr(dateString);
 
+                if (firstName == null || firstName.isEmpty()) {
+                        if (!errorEncountered) {
+                                showAlert("Missing data for opening an account.");
+                                errorEncountered = true;
+                        }
+                }
+                String lastName = lastname.getText();
+                if (lastName == null || lastName.isEmpty()) {
+                        if (!errorEncountered) {
+                                showAlert("Missing data for opening an account.");
+                                errorEncountered = true;
+                        }
+                }
+                String dateString = DOBLabel.getValue() != null ? DOBLabel.getValue().toString() : null;
+                Date date = null;
+                if (dateString != null) {
+                        date = Date.fromDateStr(dateString);
+                } else {
+                        if (!errorEncountered) {
+                                showAlert("Missing data for opening an account.");
+                        }
+                }
                 if (date.isFutureDate()) {
 
                         Profile profile = new Profile(firstName, lastName, date);
@@ -307,8 +361,6 @@ public class HelloController {
                         String depositMessage = accountDatabase.deposit(shellAccount);
                         if (shellAccount.getBalance() == 0) {
                                 showAlert(depositMessage);
-                        } else if (depositMessage.contains("CC") || depositMessage.contains("C") || depositMessage.contains("MM") || depositMessage.contains("S")) {
-                                showAlert(depositMessage);
                         } else {
                                 deposit_output.appendText(depositMessage);
                         }
@@ -370,7 +422,7 @@ public class HelloController {
                         }
 
                         if (!accountExists) {
-                                deposit_output.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") is not in the database.\n");
+                                showAlert(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") is not in the database.\n");
                         }
                 } else {
                         showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");

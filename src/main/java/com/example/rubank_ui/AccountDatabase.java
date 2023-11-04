@@ -152,7 +152,7 @@ public class AccountDatabase {
                 accounts[i].deposit(account.getBalance());
                 String accountMessage = account.getHolder().toString() + " (" + account.short_AccountType() + ") ";
                 if (account.getBalance() == 0) {
-                    message = (accountMessage + "is not in the database.");
+                    message = (accountMessage + "is not in the database.\n");
                 } else {
                     message = (accountMessage + "Deposit - balance updated.\n");
                 }
@@ -160,7 +160,7 @@ public class AccountDatabase {
             }
         }
         if (!accountExists) {
-            message = account.getHolder().toString() + " (" + account.short_AccountType() + ") is not in the database.";
+            message = account.getHolder().toString() + " (" + account.short_AccountType() + ") is not in the database.\n";
         }
         return message;
     }
@@ -171,7 +171,7 @@ public class AccountDatabase {
      */
     public String printSorted() {
         if (numAcct == 0) {
-            return "Account Database is empty!";
+            return "Account Database is empty!\n";
         } else {
             StringBuilder output = new StringBuilder();
             output.append("* Accounts sorted by account type and profile:\n");
@@ -194,7 +194,7 @@ public class AccountDatabase {
             for (int i = 0; i < numAcct; i++) {
                 output.append(accounts[i].toString()).append("\n");
             }
-            output.append("*end of list");
+            output.append("*end of list\n");
 
             return output.toString();
         }
@@ -238,7 +238,7 @@ public class AccountDatabase {
                         .append("\n");
             }
 
-            output.append("* End of list.\n");
+            output.append("* end of list.\n");
         }
 
         return output.toString();
@@ -285,7 +285,7 @@ public class AccountDatabase {
 
             }
 
-            output.append("* End of list.\n");
+            output.append("* end of list.\n");
         }
         return output.toString();
     }

@@ -16,6 +16,10 @@ public class HelloController {
         public TextArea mainOutput;
         public TextArea deposit_output;
         public TextArea outputTextArea;
+        public TextField firstname_for_deposit;
+        public TextField last_name_for_deposit;
+        public DatePicker DOBLabel_for_deposit;
+        public TextField amount_for_deposit;
 
         @FXML
 
@@ -344,7 +348,7 @@ public class HelloController {
                         errorEncountered = true;
                 }
 
-                String firstName = firstname.getText();
+                String firstName = firstname_for_deposit.getText();
 
                 if (firstName == null || firstName.isEmpty()) {
                         if (!errorEncountered) {
@@ -352,14 +356,14 @@ public class HelloController {
                                 errorEncountered = true;
                         }
                 }
-                String lastName = lastname.getText();
-                if (lastName == null || lastName.isEmpty()) {
+                String lastName = last_name_for_deposit.getText();
+                if (lastName == null || firstName.isEmpty()) {
                         if (!errorEncountered) {
                                 showAlert("Missing data for opening an account.");
                                 errorEncountered = true;
                         }
                 }
-                String dateString = DOBLabel.getValue() != null ? DOBLabel.getValue().toString() : null;
+                String dateString = DOBLabel_for_deposit.getValue() != null ? DOBLabel_for_deposit.getValue().toString() : null;
                 Date date = null;
                 if (dateString != null) {
                         date = Date.fromDateStr(dateString);
@@ -371,7 +375,7 @@ public class HelloController {
                 if (date.isFutureDate()) {
                         double depositAmount;
                         try {
-                                depositAmount = Double.parseDouble(amount.getText());
+                                depositAmount = Double.parseDouble(amount_for_deposit.getText());
                         } catch (NumberFormatException e) {
                                 showAlert("Not a valid amount.\n");
                                 return;
@@ -415,7 +419,7 @@ public class HelloController {
                         errorEncountered = true;
                 }
 
-                String firstName = firstname.getText();
+                String firstName = firstname_for_deposit.getText();
 
                 if (firstName == null || firstName.isEmpty()) {
                         if (!errorEncountered) {
@@ -423,14 +427,14 @@ public class HelloController {
                                 errorEncountered = true;
                         }
                 }
-                String lastName = lastname.getText();
+                String lastName = last_name_for_deposit.getText();
                 if (lastName == null || lastName.isEmpty()) {
                         if (!errorEncountered) {
                                 showAlert("Missing data for opening an account.");
                                 errorEncountered = true;
                         }
                 }
-                String dateString = DOBLabel.getValue() != null ? DOBLabel.getValue().toString() : null;
+                String dateString = DOBLabel_for_deposit.getValue() != null ? DOBLabel_for_deposit.getValue().toString() : null;
                 Date date = null;
                 if (dateString != null) {
                         date = Date.fromDateStr(dateString);

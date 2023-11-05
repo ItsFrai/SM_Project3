@@ -26,6 +26,9 @@ public class HelloController {
         private ToggleGroup Account;
 
         @FXML
+        private ToggleGroup AccountDeposit;
+
+        @FXML
         private ToggleGroup Campus;
 
 
@@ -331,7 +334,9 @@ public class HelloController {
                                 showAlert("Invalid account type: " + selectedAccountType);
                         }
                 } else {
+                        if (date != null) {
                                 showAlert("DOB invalid: Null date or not a valid calendar date or cannot be today or a future day.");
+                        }
                 }
         }
 
@@ -339,7 +344,7 @@ public class HelloController {
         protected void depositAccount() {
                 boolean errorEncountered = false;
 
-                RadioButton selectedRadioButton = (RadioButton) Account.getSelectedToggle();
+                RadioButton selectedRadioButton = (RadioButton) AccountDeposit.getSelectedToggle();
                 String selectedAccountType = null;
                 if (selectedRadioButton != null) {
                         selectedAccountType = selectedRadioButton.getText();
@@ -402,7 +407,9 @@ public class HelloController {
                                 deposit_output.appendText(depositMessage);
                         }
                 } else {
-                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                        if (date != null) {
+                                showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                        }
                 }
         }
 
@@ -410,7 +417,8 @@ public class HelloController {
         protected void withdrawalAccount() {
                 boolean errorEncountered = false;
 
-                RadioButton selectedRadioButton = (RadioButton) Account.getSelectedToggle();
+                RadioButton selectedRadioButton = (RadioButton) AccountDeposit.getSelectedToggle();
+
                 String selectedAccountType = null;
                 if (selectedRadioButton != null) {
                         selectedAccountType = selectedRadioButton.getText();
@@ -489,7 +497,9 @@ public class HelloController {
                                 showAlert(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") is not in the database.");
                         }
                 } else {
-                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
+                        if (date != null) {
+                                showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
+                        }
                 }
         }
 

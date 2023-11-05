@@ -254,7 +254,7 @@ public class HelloController {
                                 if (accountDatabase.open(account)) {
                                         mainOutput.appendText(firstName + " " + lastName + " " + dateString + " (" + account.short_AccountType() + ")" + " opened.\n");
                                 } else {
-                                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
                                 }
                         }
                 } else {
@@ -327,14 +327,41 @@ public class HelloController {
 
         @FXML
         protected void depositAccount() {
+                boolean errorEncountered = false;
+
                 RadioButton selectedRadioButton = (RadioButton) Account.getSelectedToggle();
-                String selectedAccountType = selectedRadioButton.getText();
+                String selectedAccountType = null;
+                if (selectedRadioButton != null) {
+                        selectedAccountType = selectedRadioButton.getText();
+                } else {
+                        showAlert("Missing data for opening an account.");
+                        errorEncountered = true;
+                }
 
                 String firstName = firstname.getText();
-                String lastName = lastname.getText();
-                String dateString = DOBLabel.getValue().toString();
-                Date date = Date.fromDateStr(dateString);
 
+                if (firstName == null || firstName.isEmpty()) {
+                        if (!errorEncountered) {
+                                showAlert("Missing data for opening an account.");
+                                errorEncountered = true;
+                        }
+                }
+                String lastName = lastname.getText();
+                if (lastName == null || lastName.isEmpty()) {
+                        if (!errorEncountered) {
+                                showAlert("Missing data for opening an account.");
+                                errorEncountered = true;
+                        }
+                }
+                String dateString = DOBLabel.getValue() != null ? DOBLabel.getValue().toString() : null;
+                Date date = null;
+                if (dateString != null) {
+                        date = Date.fromDateStr(dateString);
+                } else {
+                        if (!errorEncountered) {
+                                showAlert("Missing data for opening an account.");
+                        }
+                }
                 if (date.isFutureDate()) {
                         double depositAmount;
                         try {
@@ -371,14 +398,41 @@ public class HelloController {
 
         @FXML
         protected void withdrawalAccount() {
+                boolean errorEncountered = false;
+
                 RadioButton selectedRadioButton = (RadioButton) Account.getSelectedToggle();
-                String selectedAccountType = selectedRadioButton.getText();
+                String selectedAccountType = null;
+                if (selectedRadioButton != null) {
+                        selectedAccountType = selectedRadioButton.getText();
+                } else {
+                        showAlert("Missing data for opening an account.");
+                        errorEncountered = true;
+                }
 
                 String firstName = firstname.getText();
-                String lastName = lastname.getText();
-                String dateString = DOBLabel.getValue().toString();
-                Date date = Date.fromDateStr(dateString);
 
+                if (firstName == null || firstName.isEmpty()) {
+                        if (!errorEncountered) {
+                                showAlert("Missing data for opening an account.");
+                                errorEncountered = true;
+                        }
+                }
+                String lastName = lastname.getText();
+                if (lastName == null || lastName.isEmpty()) {
+                        if (!errorEncountered) {
+                                showAlert("Missing data for opening an account.");
+                                errorEncountered = true;
+                        }
+                }
+                String dateString = DOBLabel.getValue() != null ? DOBLabel.getValue().toString() : null;
+                Date date = null;
+                if (dateString != null) {
+                        date = Date.fromDateStr(dateString);
+                } else {
+                        if (!errorEncountered) {
+                                showAlert("Missing data for opening an account.");
+                        }
+                }
 
                 if (date.isFutureDate()) {
                         double withdrawalAmount;
@@ -422,10 +476,10 @@ public class HelloController {
                         }
 
                         if (!accountExists) {
-                                showAlert(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") is not in the database.\n");
+                                showAlert(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") is not in the database.");
                         }
                 } else {
-                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
                 }
         }
 
@@ -592,7 +646,7 @@ public class HelloController {
                                         accountDatabase.open(account);
                                 }
                         }
-                        outputTextArea.appendText("Accounts loaded.");
+                        outputTextArea.appendText("Accounts loaded.\n");
                 }
         }
 }

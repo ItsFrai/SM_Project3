@@ -264,7 +264,7 @@ public class HelloController {
                                 if (accountDatabase.open(account)) {
                                         mainOutput.appendText(firstName + " " + lastName + " " + dateString + " (" + account.short_AccountType() + ")" + " opened.\n");
                                 } else {
-                                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
+                                        showAlert(firstName + " " + lastName + " " + dateString + " (" + account.short_AccountType() + ")" + " is already in the database\n");
                                 }
                         }
                 } else {
@@ -301,6 +301,7 @@ public class HelloController {
                                 showAlert("Missing data for opening an account.");
                                 errorEncountered = true;
                         }
+
                 }
                 String dateString = DOBLabel.getValue() != null ? DOBLabel.getValue().toString() : null;
                 Date date = null;
@@ -327,7 +328,7 @@ public class HelloController {
                                 if (accountDatabase.close(accountToClose)) {
                                         mainOutput.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ")" + " has been closed.\n");
                                 } else {
-                                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                                        showAlert(firstName + " " + lastName + " " + dateString + " (" + accountToClose.short_AccountType() + ")" + " is not in the database\n");
                                 }
                         } else {
                                 showAlert("Invalid account type: " + selectedAccountType);

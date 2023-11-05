@@ -54,18 +54,18 @@
   <Tab text="Deposit/Withdraw">
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
       <Label  layoutX="121.0" layoutY="28.0" text="First Name" />
-      <TextField fx:id="firstnamefordeposit" layoutX="198.0" layoutY="24.0" />
+      <TextField fx:id="firstname_for_deposit" layoutX="198.0" layoutY="24.0" />
       <Label layoutX="121.0" layoutY="66.0" text="Last Name" />
       <Label layoutX="121.0" layoutY="101.0" text="Date of Birth" />
-      <TextField fx:id="lastnamefordeposit" layoutX="198.0" layoutY="62.0" />
-      <DatePicker fx:id="DOBLabelfordeposit" layoutX="198.0" layoutY="97.0" />
+      <TextField fx:id="last_name_for_deposit" layoutX="198.0" layoutY="62.0" />
+      <DatePicker fx:id="DOBLabel_for_deposit" layoutX="198.0" layoutY="97.0" />
       <Label layoutX="114.0" layoutY="167.0" text="Account type" />
       <RadioButton layoutX="198.0" layoutY="190.0" text="Checking" toggleGroup="$Account" />
       <RadioButton layoutX="198.0" layoutY="220.0" text="Savings" toggleGroup="$Account" />
       <RadioButton layoutX="198.0" layoutY="250.0" text="Money Market" toggleGroup="$Account" />
       <RadioButton layoutX="198.0" layoutY="280.0" text="College Checking" toggleGroup="$Account" />
       <Label layoutX="121.0" layoutY="320.0" text="Amount" />
-      <TextField fx:id="amountfordeposit" layoutX="198.0" layoutY="316.0" />
+      <TextField fx:id="amount_for_deposit" layoutX="198.0" layoutY="316.0" />
       <Button layoutX="198.0" layoutY="360.0" text="Deposit" onAction="#depositAccount" />
       <Button layoutX="260.0" layoutY="360.0" text="Withdraw" onAction="#withdrawalAccount" />
       <Label layoutX="121.0" layoutY="400.0" text="Comments" />

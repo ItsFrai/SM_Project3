@@ -139,7 +139,7 @@ public class HelloController {
                                 showAlert("Missing data for opening an account.");
                         }
                 }
-                if (date != null && date.isValid() && date.isFutureDate()) {
+                if (date != null && date.isValid() && date.isFutureDate() && selectedAccountType != null) {
                         int age = date.calculateAge();
                         Account account = null;
                         switch (selectedAccountType) {
@@ -307,7 +307,7 @@ public class HelloController {
                 if (dateString != null) {
                         date = Date.fromDateStr(dateString);
                 }
-                if (date != null && date.isFutureDate()) {
+                if (date != null && date.isFutureDate()  && selectedAccountType != null) {
 
                         Profile profile = new Profile(firstName, lastName, date);
 
@@ -357,7 +357,7 @@ public class HelloController {
                         }
                 }
                 String lastName = last_name_for_deposit.getText();
-                if (lastName == null || firstName.isEmpty()) {
+                if (lastName == null || lastName.isEmpty()) {
                         if (!errorEncountered) {
                                 showAlert("Missing data for opening an account.");
                                 errorEncountered = true;
@@ -372,7 +372,7 @@ public class HelloController {
                                 showAlert("Missing data for opening an account.");
                         }
                 }
-                if (date.isFutureDate()) {
+                if (date != null && date.isFutureDate()  && selectedAccountType != null) {
                         double depositAmount;
                         try {
                                 depositAmount = Double.parseDouble(amount_for_deposit.getText());
@@ -421,7 +421,7 @@ public class HelloController {
 
                 String firstName = firstname_for_deposit.getText();
 
-                if (firstName == null || firstName.isEmpty()) {
+                if (firstName == null || firstName.isEmpty()  && selectedAccountType != null) {
                         if (!errorEncountered) {
                                 showAlert("Missing data for opening an account.");
                                 errorEncountered = true;
@@ -444,7 +444,7 @@ public class HelloController {
                         }
                 }
 
-                if (date.isFutureDate()) {
+                if (date != null && date.isFutureDate() && selectedAccountType != null) {
                         double withdrawalAmount;
                         try {
                                 withdrawalAmount = Double.parseDouble(amount.getText());

@@ -299,7 +299,6 @@ public class HelloController {
                 if (lastName == null || lastName.isEmpty()) {
                         if (!errorEncountered) {
                                 showAlert("Missing data for opening an account.");
-                                errorEncountered = true;
                         }
 
                 }
@@ -307,12 +306,8 @@ public class HelloController {
                 Date date = null;
                 if (dateString != null) {
                         date = Date.fromDateStr(dateString);
-                } else {
-                        if (!errorEncountered) {
-                                showAlert("Missing data for opening an account.");
-                        }
                 }
-                if (date.isFutureDate()) {
+                if (date != null && date.isFutureDate()) {
 
                         Profile profile = new Profile(firstName, lastName, date);
 
@@ -328,13 +323,15 @@ public class HelloController {
                                 if (accountDatabase.close(accountToClose)) {
                                         mainOutput.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ")" + " has been closed.\n");
                                 } else {
-                                        showAlert(firstName + " " + lastName + " " + dateString + " (" + accountToClose.short_AccountType() + ")" + " is not in the database\n");
+                                        if (!firstName.isEmpty() && !lastName.isEmpty()) {
+                                                showAlert(firstName + " " + lastName + " " + dateString + " (" + accountToClose.short_AccountType() + ")" + " is not in the database\n");
+                                        }
                                 }
                         } else {
                                 showAlert("Invalid account type: " + selectedAccountType);
                         }
                 } else {
-                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
+                                showAlert("DOB invalid: Null date or not a valid calendar date or cannot be today or a future day.");
                 }
         }
 

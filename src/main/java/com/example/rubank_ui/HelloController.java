@@ -209,7 +209,7 @@ public class HelloController {
                                                 try {
                                                         double deposit = Double.parseDouble(amount.getText());
                                                         RadioButton selectedRadioButtonforCampus = (RadioButton) Campus.getSelectedToggle();
-                                                        String campusName = null;
+                                                        String campusName;
                                                         if (selectedRadioButtonforCampus != null) {
                                                                 campusName = selectedRadioButtonforCampus.getText();
                                                         } else {

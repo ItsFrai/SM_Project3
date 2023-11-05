@@ -139,7 +139,7 @@ public class HelloController {
                                 showAlert("Missing data for opening an account.");
                         }
                 }
-                if (date.isValid() && date.isFutureDate()) {
+                if (date != null && date.isValid() && date.isFutureDate()) {
                         int age = date.calculateAge();
                         Account account = null;
                         switch (selectedAccountType) {
@@ -268,7 +268,9 @@ public class HelloController {
                                 }
                         }
                 } else {
-                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
+                        if (date != null) {
+                                showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
+                        }
                 }
         }
 

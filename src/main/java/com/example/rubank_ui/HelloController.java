@@ -534,8 +534,15 @@ public class HelloController {
                 if (selectedFile != null) {
                         Scanner scanner = new Scanner(selectedFile);
                         while (scanner.hasNextLine()) {
+
                                 String line = scanner.nextLine();
+
+                                if (line.trim().isEmpty()) {
+                                        continue;
+                                }
+
                                 StringTokenizer tokenizer = new StringTokenizer(line, ",");
+
 
                                 if (tokenizer.countTokens() < 5) {
                                         showAlert("Missing data for opening an account.");

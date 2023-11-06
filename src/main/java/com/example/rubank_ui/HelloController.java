@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -22,7 +23,6 @@ public class HelloController {
         public TextField amount_for_deposit;
 
         @FXML
-
         private ToggleGroup Account;
 
         @FXML
@@ -31,10 +31,8 @@ public class HelloController {
         @FXML
         private ToggleGroup Campus;
 
-
         @FXML
         private DatePicker DOBLabel;
-
 
         @FXML
         private TextField firstname;
@@ -130,21 +128,27 @@ public class HelloController {
                 if (lastName == null || lastName.isEmpty()) {
                         if (!errorEncountered) {
                                 showAlert("Missing data for opening an account.");
-                                errorEncountered = true;
                         }
                 }
-                String dateString = DOBLabel.getValue() != null ? DOBLabel.getValue().toString() : null;
+                String[] dateString;
                 Date date = null;
-                if (dateString != null) {
 
-                        date = Date.fromDateStr(dateString);
+                String newStringDate = null;
 
+                if (DOBLabel.getValue() != null) {
+                        dateString = DOBLabel.getValue().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")).split("/");
 
-                } else {
-                        if (!errorEncountered) {
-                                showAlert("Missing data for opening an account.");
+                        if (dateString.length == 3) {
+                                int month = Integer.parseInt(dateString[1]);
+                                int day = Integer.parseInt(dateString[2]);
+                                int year = Integer.parseInt(dateString[0]);
+                                date = new Date(year,month, day);
+                                newStringDate = (month + "/" + day + "/" + year);
                         }
+                } else {
+                        showAlert("Missing data for opening an account.");
                 }
+
                 if (date != null && date.isValid() && date.isFutureDate() && selectedAccountType != null) {
                         int age = date.calculateAge();
                         Account account = null;
@@ -163,7 +167,7 @@ public class HelloController {
                                                         showAlert("Not a valid amount or missing deposit amount.");
                                                 }
                                         } else {
-                                                showAlert("DOB invalid: " + dateString + " under 16.");
+                                                showAlert("DOB invalid: " + newStringDate + " under 16.");
                                         }
                                         break;
 
@@ -186,7 +190,7 @@ public class HelloController {
                                                         showAlert("Not a valid amount.");
                                                 }
                                         } else {
-                                                showAlert("DOB invalid: " + dateString + " under 16.");
+                                                showAlert("DOB invalid: " + newStringDate + " under 16.");
                                         }
                                         break;
 
@@ -210,7 +214,7 @@ public class HelloController {
                                                         showAlert("Not a valid amount.");
                                                 }
                                         } else {
-                                                showAlert("DOB invalid: " + dateString + " under 16.");
+                                                showAlert("DOB invalid: " + newStringDate + " under 16.");
                                         }
                                         break;
 
@@ -255,9 +259,9 @@ public class HelloController {
                                                 }
                                         } else {
                                                 if (age < 16) {
-                                                        showAlert("DOB invalid: " + dateString + " under 16.");
+                                                        showAlert("DOB invalid: " + newStringDate + " under 16.");
                                                 } else {
-                                                        showAlert("DOB invalid: " + dateString + " over 24.");
+                                                        showAlert("DOB invalid: " + newStringDate + " over 24.");
                                                 }
                                         }
                                         break;
@@ -268,14 +272,14 @@ public class HelloController {
 
                         if (account != null) {
                                 if (accountDatabase.open(account)) {
-                                        mainOutput.appendText(firstName + " " + lastName + " " + dateString + " (" + account.short_AccountType() + ")" + " opened.\n");
+                                        mainOutput.appendText(firstName + " " + lastName + " " + newStringDate + " (" + account.short_AccountType() + ")" + " opened.\n");
                                 } else {
-                                        showAlert(firstName + " " + lastName + " " + dateString + " (" + account.short_AccountType() + ")" + " is already in the database\n");
+                                        showAlert(firstName + " " + lastName + " " + newStringDate + " (" + account.short_AccountType() + ")" + " is already in the database\n");
                                 }
                         }
                 } else {
                         if (date != null) {
-                                showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
+                                showAlert("DOB invalid:" + newStringDate +  " not a valid calendar date or cannot be today or a future day.");
                         }
                 }
         }
@@ -308,10 +312,23 @@ public class HelloController {
                         }
 
                 }
-                String dateString = DOBLabel.getValue() != null ? DOBLabel.getValue().toString() : null;
+                String[] dateString;
                 Date date = null;
-                if (dateString != null) {
-                        date = Date.fromDateStr(dateString);
+
+                String newStringDate = null;
+
+                if (DOBLabel.getValue() != null) {
+                        dateString = DOBLabel.getValue().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")).split("/");
+
+                        if (dateString.length == 3) {
+                                int month = Integer.parseInt(dateString[1]);
+                                int day = Integer.parseInt(dateString[2]);
+                                int year = Integer.parseInt(dateString[0]);
+                                date = new Date(year,month, day);
+                                newStringDate = (month + "/" + day + "/" + year);
+                        }
+                } else {
+                        showAlert("Missing data for opening an account.");
                 }
                 if (date != null && date.isFutureDate()  && selectedAccountType != null) {
 
@@ -324,13 +341,12 @@ public class HelloController {
                                 case "College Checking" -> new CollegeChecking(profile, 0.0, com.example.rubank_ui.Campus.NEW_BRUNSWICK);
                                 default -> null;
                         };
-
                         if (accountToClose != null) {
                                 if (accountDatabase.close(accountToClose)) {
-                                        mainOutput.appendText(firstName + " " + lastName + " " + dateString + " (" + accountToClose.short_AccountType() + ")" + " has been closed.\n");
+                                        mainOutput.appendText(firstName + " " + lastName + " " + newStringDate + " (" + accountToClose.short_AccountType() + ")" + " has been closed.\n");
                                 } else {
                                         if (!firstName.isEmpty() && !lastName.isEmpty()) {
-                                                showAlert(firstName + " " + lastName + " " + dateString + " (" + accountToClose.short_AccountType() + ")" + " is not in the database\n");
+                                                showAlert(firstName + " " + lastName + " " + newStringDate + " (" + accountToClose.short_AccountType() + ")" + " is not in the database\n");
                                         }
                                 }
                         } else {
@@ -338,7 +354,7 @@ public class HelloController {
                         }
                 } else {
                         if (date != null) {
-                                showAlert("DOB invalid: Null date or not a valid calendar date or cannot be today or a future day.");
+                                showAlert("DOB invalid:" + newStringDate + " not a valid calendar date or cannot be today or a future day.");
                         }
                 }
         }
@@ -368,19 +384,27 @@ public class HelloController {
                 if (lastName == null || lastName.isEmpty()) {
                         if (!errorEncountered) {
                                 showAlert("Missing data for opening an account.");
-                                errorEncountered = true;
                         }
                 }
-                String dateString = DOBLabel_for_deposit.getValue() != null ? DOBLabel_for_deposit.getValue().toString() : null;
+                String[] dateString;
                 Date date = null;
-                if (dateString != null) {
-                        date = Date.fromDateStr(dateString);
-                } else {
-                        if (!errorEncountered) {
-                                showAlert("Missing data for opening an account.");
+
+                String newStringDate = null;
+
+                if (DOBLabel.getValue() != null) {
+                        dateString = DOBLabel.getValue().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")).split("/");
+
+                        if (dateString.length == 3) {
+                                int month = Integer.parseInt(dateString[1]);
+                                int day = Integer.parseInt(dateString[2]);
+                                int year = Integer.parseInt(dateString[0]);
+                                date = new Date(year,month, day);
+                                newStringDate = (month + "/" + day + "/" + year);
                         }
+                } else {
+                        showAlert("Missing data for opening an account.");
                 }
-                if (date != null && date.isFutureDate()  && selectedAccountType != null) {
+                if (date != null && date.isFutureDate()  && selectedAccountType != null && date.isValid()) {
                         double depositAmount;
                         try {
                                 depositAmount = Double.parseDouble(amount_for_deposit.getText());
@@ -412,7 +436,7 @@ public class HelloController {
                                 }
                         } else {
                                 if (date != null) {
-                                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                                        showAlert("DOB invalid:" + newStringDate +  " not a valid calendar date or cannot be today or a future day.");
                                 }
                         }
                 }
@@ -444,20 +468,27 @@ public class HelloController {
                 if (lastName == null || lastName.isEmpty()) {
                         if (!errorEncountered) {
                                 showAlert("Missing data for opening an account.");
-                                errorEncountered = true;
                         }
                 }
-                String dateString = DOBLabel_for_deposit.getValue() != null ? DOBLabel_for_deposit.getValue().toString() : null;
+                String[] dateString;
                 Date date = null;
-                if (dateString != null) {
-                        date = Date.fromDateStr(dateString);
-                } else {
-                        if (!errorEncountered) {
-                                showAlert("Missing data for opening an account.");
-                        }
-                }
 
-                if (date != null && date.isFutureDate() && selectedAccountType != null) {
+                String newStringDate = null;
+
+                if (DOBLabel.getValue() != null) {
+                        dateString = DOBLabel.getValue().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")).split("/");
+
+                        if (dateString.length == 3) {
+                                int month = Integer.parseInt(dateString[1]);
+                                int day = Integer.parseInt(dateString[2]);
+                                int year = Integer.parseInt(dateString[0]);
+                                date = new Date(year,month, day);
+                                newStringDate = (month + "/" + day + "/" + year);
+                        }
+                } else {
+                        showAlert("Missing data for opening an account.");
+                }
+                if (date != null && date.isFutureDate() && selectedAccountType != null && date.isValid()) {
                         double withdrawalAmount;
                         try {
                                 withdrawalAmount = Double.parseDouble(amount_for_deposit.getText());
@@ -491,19 +522,19 @@ public class HelloController {
                                                         MoneyMarket moneyMarketAccount = (MoneyMarket) accountDatabase.getAccounts()[i];
                                                         moneyMarketAccount.increaseWithdrawal();
                                                 }
-                                                deposit_output.appendText(firstName + " " + lastName + " " + dateString + " (" + shellAccount.short_AccountType() + ") Withdrawal - balance updated.\n");
+                                                deposit_output.appendText(firstName + " " + lastName + " " + newStringDate + " (" + shellAccount.short_AccountType() + ") Withdrawal - balance updated.\n");
                                         } else {
-                                                deposit_output.appendText(firstName + " " + lastName + " " + dateString + " (" + shellAccount.short_AccountType() + ") Withdrawal - insufficient funds.\n");
+                                                showAlert(firstName + " " + lastName + " " + newStringDate + " (" + shellAccount.short_AccountType() + ") Withdrawal - insufficient funds.");
                                         }
                                 }
                         }
 
                         if (!accountExists) {
-                                showAlert(firstName + " " + lastName + " " + dateString + " (" + shellAccount.short_AccountType() + ") is not in the database.");
+                                showAlert(firstName + " " + lastName + " " + newStringDate + " (" + shellAccount.short_AccountType() + ") is not in the database.");
                         }
                 } else {
                         if (date != null) {
-                                showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.");
+                                showAlert("DOB invalid:" + newStringDate +  " not a valid calendar date or cannot be today or a future day.");
                         }
                 }
         }

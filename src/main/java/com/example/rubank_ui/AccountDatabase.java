@@ -174,7 +174,7 @@ public class AccountDatabase {
             return "Account Database is empty!\n";
         } else {
             StringBuilder output = new StringBuilder();
-            output.append("* Accounts sorted by account type and profile:\n");
+            output.append("* Accounts sorted by account type and profile.\n");
 
             for (int i = 0; i < numAcct - 1; i++) {
                 boolean swapped = false;
@@ -210,7 +210,7 @@ public class AccountDatabase {
         if (numAcct == 0) {
             output.append("Account Database is empty!\n");
         } else {
-            output.append("* List of accounts with fee and monthly interest:\n");
+            output.append("* List of accounts with fee and monthly interest.\n");
 
             // Sort the accounts
             for (int i = 0; i < numAcct - 1; i++) {
@@ -253,7 +253,7 @@ public class AccountDatabase {
         if (numAcct == 0) {
             output.append("Account Database is empty!\n");
         } else {
-            output.append("* List of accounts with fees and interests applied:\n");
+            output.append("* List of accounts with fees and interests applied.\n");
 
             // Sort the accounts
             for (int i = 0; i < numAcct - 1; i++) {

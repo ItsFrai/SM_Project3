@@ -11,8 +11,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-
-public class HelloController {
+/**
+ * Controller for handling account opening and related operations to a banking transaction.
+ * @author Fraidoon Pourooshasb, Samman Pandey
+ */
+public class TransactionManagerController {
 
         public TextArea mainOutput;
         public TextArea deposit_output;
@@ -48,6 +51,10 @@ public class HelloController {
 
         static AccountDatabase accountDatabase = new AccountDatabase();
 
+        /**
+         * Handle the selection of the College Checking account type.
+         * This method disables the loyalCustomerCheckbox, and enables the Campus radio buttons.
+         */
         @FXML
         void handleCollegeCheckingSelection() {
 
@@ -62,6 +69,13 @@ public class HelloController {
                 });
         }
 
+
+
+        /**
+         * Handle the selection of account types other than College Checking.
+         * This method checks the selected account type, enables or disables the loyalCustomerCheckbox,
+         * and modifies the Campus radio buttons accordingly.
+         */
         @FXML
         void handleOtherAccountSelection() {
 
@@ -84,6 +98,10 @@ public class HelloController {
                 });
         }
 
+        /**
+         * Clear all input fields and selections on the form.
+         * This method resets the values of first name, last name, date of birth, amount, and radio button selections.
+         */
         @FXML
         protected void clearAllFields() {
                 firstname.clear();
@@ -94,6 +112,12 @@ public class HelloController {
                 Campus.selectToggle(null);
                 loyalCustomerCheckbox.setSelected(false);
         }
+
+        /**
+         * Display an error alert dialog with the given message.
+         *
+         * @param message The error message to be displayed in the alert.
+         */
         @FXML
         private void showAlert(String message) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -103,6 +127,11 @@ public class HelloController {
                 alert.showAndWait();
         }
 
+        /**
+         * Attempt to open a new account based on user input and validate the provided data.
+         * This method performs a series of checks and validations, including account type, personal information,
+         * and deposit amount, to open a new account.
+         */
         @FXML
         protected void openAccount() {
                 boolean errorEncountered = false;
@@ -284,6 +313,10 @@ public class HelloController {
                 }
         }
 
+        /**
+         * Attempt to close an account based on user input and validate the provided data.
+         * This method checks the selected account type, personal information, and date of birth to close an account.
+         */
         @FXML
         protected void closeAccount() {
                 boolean errorEncountered = false;
@@ -312,11 +345,13 @@ public class HelloController {
                         }
 
                 }
+                // Parse and validate the date of birth.
                 String[] dateString;
                 Date date = null;
 
                 String newStringDate = null;
 
+                // Validate the date, account type, and close the account if possible.
                 if (DOBLabel.getValue() != null) {
                         dateString = DOBLabel.getValue().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")).split("/");
 
@@ -359,10 +394,15 @@ public class HelloController {
                 }
         }
 
+        /**
+         * Attempt to deposit funds into an account based on user input and validate the provided data.
+         * This method checks the selected account type, personal information, and deposit amount to make a deposit.
+         */
         @FXML
         protected void depositAccount() {
                 boolean errorEncountered = false;
 
+                // Get the selected account type for deposit.
                 RadioButton selectedRadioButton = (RadioButton) AccountDeposit.getSelectedToggle();
                 String selectedAccountType = null;
                 if (selectedRadioButton != null) {
@@ -372,6 +412,7 @@ public class HelloController {
                         errorEncountered = true;
                 }
 
+                // Get the first name for the deposit.
                 String firstName = firstname_for_deposit.getText();
 
                 if (firstName == null || firstName.isEmpty()) {
@@ -442,6 +483,11 @@ public class HelloController {
                 }
         }
 
+
+        /**
+         * Attempt to withdraw funds from an account based on user input and validate the provided data.
+         * This method checks the selected account type, personal information, withdrawal amount, and attempts a withdrawal.
+         */
         @FXML
         protected void withdrawalAccount() {
                 boolean errorEncountered = false;
@@ -488,6 +534,7 @@ public class HelloController {
                 } else {
                         showAlert("Missing data for opening an account.");
                 }
+                // Validate the date, account type, and perform the withdrawal if possible.
                 if (date != null && date.isFutureDate() && selectedAccountType != null && date.isValid()) {
                         double withdrawalAmount;
                         try {
@@ -539,24 +586,39 @@ public class HelloController {
                 }
         }
 
+        /**
+         * Print a sorted list of accounts and display them in the output text area.
+         */
         @FXML
         protected void printSortedAccounts() {
                 String sortedAccounts = accountDatabase.printSorted();
                 outputTextArea.appendText(sortedAccounts);
         }
 
+        /**
+         * Print a list of fees and interests in the accounts and display them in the output text area.
+         */
         @FXML
         protected void printFeesAndInterests() {
                 String output = accountDatabase.printFeesAndInterests();
                 outputTextArea.appendText(output);
         }
 
+        /**
+         * Print and display the updated balances for all accounts in the output text area.
+         */
         @FXML
         protected void printUpdatedBalances() {
                 String output = accountDatabase.printUpdatedBalances();
                 outputTextArea.appendText(output);
         }
 
+        /**
+         * Load account data from a file, validate the data, and create new accounts accordingly.
+         * The method reads the data line by line and processes it to open accounts based on the provided information.
+         *
+         * @throws FileNotFoundException if the specified file is not found.
+         */
         @FXML
         protected void load_accounts() throws FileNotFoundException {
                 FileChooser fileChooser = new FileChooser();

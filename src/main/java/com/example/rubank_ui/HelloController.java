@@ -136,6 +136,7 @@ public class HelloController {
                         }
                 }
                 String dateString = DOBLabel.getValue() != null ? DOBLabel.getValue().toString() : null;
+                System.out.println(dateString);
                 Date date = null;
                 if (dateString != null) {
 
@@ -405,15 +406,17 @@ public class HelloController {
                                 case "College Checking" -> new CollegeChecking(profile, depositAmount, com.example.rubank_ui.Campus.NEW_BRUNSWICK);
                                 default -> null;
                         };
-                        String depositMessage = accountDatabase.deposit(shellAccount);
-                        if (shellAccount.getBalance() == 0) {
-                                showAlert(depositMessage);
+                        if (firstName != null && lastName != null) {
+                                String depositMessage = accountDatabase.deposit(shellAccount);
+                                        if (depositMessage.contains("not in the database")) {
+                                                showAlert(depositMessage);
+                                        } else {
+                                                deposit_output.appendText(depositMessage);
+                                }
                         } else {
-                                deposit_output.appendText(depositMessage);
-                        }
-                } else {
-                        if (date != null) {
-                                showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                                if (date != null) {
+                                        showAlert("DOB invalid: " + dateString + " not a valid calendar date or cannot be today or a future day.\n");
+                                }
                         }
                 }
         }
@@ -540,7 +543,6 @@ public class HelloController {
                                 if (line.trim().isEmpty()) {
                                         continue;
                                 }
-
                                 StringTokenizer tokenizer = new StringTokenizer(line, ",");
 
 

@@ -455,7 +455,7 @@ public class HelloController {
                 if (date != null && date.isFutureDate() && selectedAccountType != null) {
                         double withdrawalAmount;
                         try {
-                                withdrawalAmount = Double.parseDouble(amount.getText());
+                                withdrawalAmount = Double.parseDouble(amount_for_deposit.getText());
                         } catch (NumberFormatException e) {
                                 showAlert("Not a valid amount.");
                                 return;

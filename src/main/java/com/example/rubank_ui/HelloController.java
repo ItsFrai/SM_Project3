@@ -330,7 +330,7 @@ public class HelloController {
 
                         if (accountToClose != null) {
                                 if (accountDatabase.close(accountToClose)) {
-                                        mainOutput.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ")" + " has been closed.\n");
+                                        mainOutput.appendText(firstName + " " + lastName + " " + dateString + " (" + accountToClose.short_AccountType() + ")" + " has been closed.\n");
                                 } else {
                                         if (!firstName.isEmpty() && !lastName.isEmpty()) {
                                                 showAlert(firstName + " " + lastName + " " + dateString + " (" + accountToClose.short_AccountType() + ")" + " is not in the database\n");
@@ -494,15 +494,15 @@ public class HelloController {
                                                         MoneyMarket moneyMarketAccount = (MoneyMarket) accountDatabase.getAccounts()[i];
                                                         moneyMarketAccount.increaseWithdrawal();
                                                 }
-                                                deposit_output.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") Withdrawal - balance updated.\n");
+                                                deposit_output.appendText(firstName + " " + lastName + " " + dateString + " (" + shellAccount.short_AccountType() + ") Withdrawal - balance updated.\n");
                                         } else {
-                                                deposit_output.appendText(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") Withdrawal - insufficient funds.\n");
+                                                deposit_output.appendText(firstName + " " + lastName + " " + dateString + " (" + shellAccount.short_AccountType() + ") Withdrawal - insufficient funds.\n");
                                         }
                                 }
                         }
 
                         if (!accountExists) {
-                                showAlert(firstName + " " + lastName + " " + dateString + " (" + selectedAccountType + ") is not in the database.");
+                                showAlert(firstName + " " + lastName + " " + dateString + " (" + shellAccount.short_AccountType() + ") is not in the database.");
                         }
                 } else {
                         if (date != null) {

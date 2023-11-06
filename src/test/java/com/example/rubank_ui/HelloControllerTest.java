@@ -61,31 +61,6 @@ class HelloControllerTest {
 
     }
 
-    /*@Test
-    public void testInvalidAmountForCheckingAccount() {
 
-        AccountDatabase accountDatabase = new AccountDatabase();
-
-        boolean showAlertCalled = false;
-
-        // Set up the necessary input values for your test case
-        RadioButton selectedRadioButton = new RadioButton();
-        String selectedAccountType = "Checking";
-        String firstName = "John";
-        String lastName = "Doe";
-        String dob = "12/5/2005";
-        Date newDob = Date.fromDateStr(dob);
-
-        Profile profile = new Profile(firstName,lastName,newDob);
-
-        Account account = new Savings(profile, -1000, true);
-
-        accountDatabase.open(account);
-        
-
-        // Assert that showAlert() was called when the amount is invalid
-        assertTrue(showAlertCalled);
-    }
-*/
 
 }

@@ -7,8 +7,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -136,7 +134,6 @@ public class HelloController {
                         }
                 }
                 String dateString = DOBLabel.getValue() != null ? DOBLabel.getValue().toString() : null;
-                System.out.println(dateString);
                 Date date = null;
                 if (dateString != null) {
 
